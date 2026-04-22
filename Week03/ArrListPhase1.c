@@ -5,29 +5,33 @@
 #define DEFVAL 36
 
 /*
-추가적으로 리스트 기능 프로그램을 만든다.
-리스트의 추가, 삭제, 변경 기능을 추가한다.
+기존에 있던 배열 리스트 프로그램을
+ADT를 사용하여 자료구조를 재사용 하기좋게 수정한다.
 */
 
-void input_list();
-void print_list();
+typedef struct {
+    int elem[MAX];
+    int size;
+} arrlist_t;
+
+arrlist_t list;
+
+void input_list(arrlist_t* listp);
+void print_list(arrlist_t* listp);
 void run_menu();
-void add_list(int val);
-void insert_list(int pos, int val);
-int delete_list(int pos);
-int update_list(int pos, int val);
+void add_list(arrlist_t* listp, int val);
+void insert_list(arrlist_t* listp, int pos, int val);
+int delete_list(arrlist_t* listp, int pos);
+int update_list(arrlist_t* listp, int pos, int val);
 void get_line(int n);
 int only_num(int *num);
-
-int size;
-int elem[MAX];
 
 int main(void) {
     srand(time(NULL));
 
     printf("추가할 정수의 개수를 입력하세요 : ");
-    if (only_num(&size)) return 0;
-    input_list();
+    if (only_num(&list.size)) return 0;
+    input_list(&list);
     run_menu();
 
     return 0;
@@ -39,7 +43,7 @@ void run_menu() {
     int del, upd;
     while (1) {
         get_line(DEFVAL);
-        print_list();
+        print_list(&list);
         printf("\n(1) 끝에 값 추가\t(2) pos번째에 값 추가\n");
         printf("(3) pos번째 삭제\t(4) pos번째 값 변경\n");
         printf("(5) 종료\n");
@@ -51,7 +55,7 @@ void run_menu() {
             get_line(DEFVAL);
             printf("추가 값 : ");
             if (only_num(&val)) continue;
-            add_list(val);
+            add_list(&list, val);
             break;
         case 2:
             get_line(DEFVAL);
@@ -59,13 +63,13 @@ void run_menu() {
             if (only_num(&pos)) continue;
             printf("추가 값 : ");
             if (only_num(&val)) continue;
-            insert_list(pos, val);
+            insert_list(&list, pos, val);
             break;
         case 3:
             get_line(DEFVAL);
             printf("위치 입력 : ");
             if (only_num(&pos)) continue;
-            del = delete_list(pos);
+            del = delete_list(&list, pos);
             printf("삭제된 값 : %d\n", del);
             break;
         case 4:
@@ -74,7 +78,7 @@ void run_menu() {
             if (only_num(&pos)) continue;
             printf("변경 값 : ");
             if (only_num(&val)) continue;
-            upd = update_list(pos, val);
+            upd = update_list(&list, pos, val);
             printf("변경전 값 : %d\n", upd);
             break;
         default: get_line(DEFVAL); printf("1 ~ 5 중 하나를 선택해주세요.\n"); continue;
@@ -82,49 +86,49 @@ void run_menu() {
     }
 }
 
-void add_list(int val) {
+void add_list(arrlist_t* listp, int val) {
     printf("값 %d를 리스트 맨 끝에 추가합니다.\n", val);
-    elem[size++] = val; /*맨 뒤 인덱스에 값을 넣고, size 후증가
+    listp->elem[listp->size++] = val; /*맨 뒤 인덱스에 값을 넣고, size 후증가
     (ex. 공간이 8이면 인덱스는 0~7인데, size는 8이므로 맨 뒤에 추가 됨) */
 }
 
-void insert_list(int pos, int val) {
+void insert_list(arrlist_t* listp, int pos, int val) {
     printf("값 %d를 리스트 %d번째에 추가합니다.\n", val, pos);
-    for(int index = size - 1; index >= pos; index--) { // 인덱스 마지막요소에서 pos위치까지
-        elem[index + 1] = elem[index]; // 요소의 값을 한 칸씩 뒤로 땡김
+    for(int index = listp->size - 1; index >= pos; index--) { // 인덱스 마지막요소에서 pos위치까지
+        listp->elem[index + 1] = listp->elem[index]; // 요소의 값을 한 칸씩 뒤로 땡김
     }
-    elem[pos] = val; // pos에 있던 값을 뒤로 땡겼으니 pos번째에 값 할당
-    size++; // 값이 추가됐으니 size 후증가
+    listp->elem[pos] = val; // pos에 있던 값을 뒤로 땡겼으니 pos번째에 값 할당
+    listp->size++; // 값이 추가됐으니 size 후증가
 }
 
-int delete_list(int pos) {
-    int delete = elem[pos]; // pos에 있는 값 임시저장
+int delete_list(arrlist_t* listp, int pos) {
+    int delete = listp->elem[pos]; // pos에 있는 값 임시저장
     printf("리스트 %d번째 값 %d를 삭제합니다.\n", pos, delete);
-    for(int index = pos; index <= size - 1; index++) { // pos에서 인덱스 마지막까지
-        elem[index] = elem[index + 1]; // 요소 값을 앞으로 한 칸씩 땡김 (pos값 지워짐)
+    for(int index = pos; index <= listp->size - 1; index++) { // pos에서 인덱스 마지막까지
+        listp->elem[index] = listp->elem[index + 1]; // 요소 값을 앞으로 한 칸씩 땡김 (pos값 지워짐)
     }
-    size--; // 앞으로 한칸씩 땡겼으니 size 1 내려감
+    listp->size--; // 앞으로 한칸씩 땡겼으니 size 1 내려감
     return delete; // 삭제한 값 반환
 }
 
-int update_list(int pos, int val) {
-    int update = elem[pos];
+int update_list(arrlist_t* listp, int pos, int val) {
+    int update = listp->elem[pos];
     printf("리스트 %d번째 값을 %d로 변경합니다.\n", pos, val);
-    elem[pos] = val; // pos번째 값을 입력한 값으로 변경
+    listp->elem[pos] = val; // pos번째 값을 입력한 값으로 변경
     return update; // 업데이트 전 값 반환
 }
 
-void input_list() {
-    for(int i = 0; i < size; i++) {
-        elem[i] = rand() % 100;
+void input_list(arrlist_t* listp) {
+    for(int i = 0; i < listp->size; i++) {
+        listp->elem[i] = rand() % 100;
         // scanf("%d", &elem[i]); // 입력 주석처리
     }
 }
 
-void print_list() {
-    for(int i = 0; i < size; i++) {
-        printf("%d", elem[i]);
-        if (i != size - 1) printf(", "); // 마지막 인덱스 제외
+void print_list(arrlist_t* listp) {
+    for(int i = 0; i < listp->size; i++) {
+        printf("%d", listp->elem[i]);
+        if (i != listp->size - 1) printf(", "); // 마지막 인덱스 제외
         if (i % 8 == 7) printf("\n"); // 8개씩 나눠 개행, 배열 인덱스는 0부터라 나머지 7확인
     }
 }

@@ -1,26 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #define MAX 100
 #define DEFVAL 36
 
 /*
-추가적으로 리스트 기능 프로그램을 만든다.
-리스트의 추가, 삭제, 변경 기능을 추가한다.
+기존의 정수형 배열 리스트 프로그램을
+문자열 배열 리스트 프로그램으로 수정한다.
 */
 
 void input_list();
 void print_list();
 void run_menu();
-void add_list(int val);
-void insert_list(int pos, int val);
-int delete_list(int pos);
-int update_list(int pos, int val);
+void add_list(char* val);
+void insert_list(int pos, char* val);
+char* delete_list(int pos);
+char* update_list(int pos, char* val);
+char* get_next();
+void free_list();
 void get_line(int n);
 int only_num(int *num);
 
 int size;
-int elem[MAX];
+char* elem[MAX];
 
 int main(void) {
     srand(time(NULL));
@@ -29,14 +32,14 @@ int main(void) {
     if (only_num(&size)) return 0;
     input_list();
     run_menu();
+    free_list();
 
     return 0;
 }
 
 void run_menu() {
     int menu;
-    int pos, val;
-    int del, upd;
+    int pos;
     while (1) {
         get_line(DEFVAL);
         print_list();
@@ -50,46 +53,43 @@ void run_menu() {
         case 1:
             get_line(DEFVAL);
             printf("추가 값 : ");
-            if (only_num(&val)) continue;
-            add_list(val);
+            add_list(get_next());
             break;
         case 2:
             get_line(DEFVAL);
             printf("위치 입력 : ");
             if (only_num(&pos)) continue;
             printf("추가 값 : ");
-            if (only_num(&val)) continue;
-            insert_list(pos, val);
+            insert_list(pos, get_next());
             break;
         case 3:
             get_line(DEFVAL);
             printf("위치 입력 : ");
             if (only_num(&pos)) continue;
-            del = delete_list(pos);
-            printf("삭제된 값 : %d\n", del);
+            char* del = delete_list(pos);
+            printf("삭제된 값 : %s\n", del);
             break;
         case 4:
             get_line(DEFVAL);
             printf("위치 입력 : ");
             if (only_num(&pos)) continue;
             printf("변경 값 : ");
-            if (only_num(&val)) continue;
-            upd = update_list(pos, val);
-            printf("변경전 값 : %d\n", upd);
+            char* upd = update_list(pos, get_next());
+            printf("변경전 값 : %s\n", upd);
             break;
         default: get_line(DEFVAL); printf("1 ~ 5 중 하나를 선택해주세요.\n"); continue;
         }
     }
 }
 
-void add_list(int val) {
-    printf("값 %d를 리스트 맨 끝에 추가합니다.\n", val);
+void add_list(char* val) {
+    printf("값 %s를 리스트 맨 끝에 추가합니다.\n", val);
     elem[size++] = val; /*맨 뒤 인덱스에 값을 넣고, size 후증가
     (ex. 공간이 8이면 인덱스는 0~7인데, size는 8이므로 맨 뒤에 추가 됨) */
 }
 
-void insert_list(int pos, int val) {
-    printf("값 %d를 리스트 %d번째에 추가합니다.\n", val, pos);
+void insert_list(int pos, char* val) {
+    printf("값 %s를 리스트 %d번째에 추가합니다.\n", val, pos);
     for(int index = size - 1; index >= pos; index--) { // 인덱스 마지막요소에서 pos위치까지
         elem[index + 1] = elem[index]; // 요소의 값을 한 칸씩 뒤로 땡김
     }
@@ -97,9 +97,9 @@ void insert_list(int pos, int val) {
     size++; // 값이 추가됐으니 size 후증가
 }
 
-int delete_list(int pos) {
-    int delete = elem[pos]; // pos에 있는 값 임시저장
-    printf("리스트 %d번째 값 %d를 삭제합니다.\n", pos, delete);
+char* delete_list(int pos) {
+    char* delete = elem[pos]; // pos에 있는 값 임시저장
+    printf("리스트 %d번째 값 %s를 삭제합니다.\n", pos, delete);
     for(int index = pos; index <= size - 1; index++) { // pos에서 인덱스 마지막까지
         elem[index] = elem[index + 1]; // 요소 값을 앞으로 한 칸씩 땡김 (pos값 지워짐)
     }
@@ -107,26 +107,35 @@ int delete_list(int pos) {
     return delete; // 삭제한 값 반환
 }
 
-int update_list(int pos, int val) {
-    int update = elem[pos];
-    printf("리스트 %d번째 값을 %d로 변경합니다.\n", pos, val);
+char* update_list(int pos, char* val) {
+    char* update = elem[pos];
+    printf("리스트 %d번째 값을 %s로 변경합니다.\n", pos, val);
     elem[pos] = val; // pos번째 값을 입력한 값으로 변경
     return update; // 업데이트 전 값 반환
 }
 
+char* get_next() {
+    char buf[20]; // 최대 20 '\0'포함 19글자
+    scanf("%s", buf); // fgets를 사용하는게 좋으나 '\n'을 '\0'로 바꿔주는 코드 넣어야 함 (귀찮음)
+    char* chptr = (char*)malloc(sizeof(char) * (strlen(buf) + 1)); // 문자열 길이만큼 동적 할당
+    strcpy(chptr, buf); // 포인터로 문자열 복사
+    return chptr; // 포인터 주소 반환
+}
+
 void input_list() {
     for(int i = 0; i < size; i++) {
-        elem[i] = rand() % 100;
-        // scanf("%d", &elem[i]); // 입력 주석처리
+        elem[i] = get_next(); // get_next()로 문자열 입력
     }
 }
 
 void print_list() {
     for(int i = 0; i < size; i++) {
-        printf("%d", elem[i]);
-        if (i != size - 1) printf(", "); // 마지막 인덱스 제외
-        if (i % 8 == 7) printf("\n"); // 8개씩 나눠 개행, 배열 인덱스는 0부터라 나머지 7확인
+        printf("%s ", elem[i]); // 배열 리스트 출력
     }
+}
+
+void free_list() {
+    for(int i = 0; i < size; i++) free(elem[i]); // 배열 리스트 메모리 해제
 }
 
 void get_line(int n) {

@@ -39,3 +39,33 @@
 - ["Separate/Arrlist.c"](./Week03/Separate/Arrlist.c)
 
 ---
+
+## 4. Stack Implimentation (<u>Week05</u>)
+> [ Stack example ]
+> ![Terminal](./Week05/Stack.png)
+### 4-1) Stack ADT structure
+> [ Stack ADT Struct & Functions ]
+>```c
+>typedef int elem_int; // 정수 타입 자료형을 elem_int로 정의
+>typedef struct Stack {
+>    int* data; // 동적 할당을 위한 스택 포인터 변수
+>    int top; // top 변수 (기본 0)
+>    int capacity; // 스택 용량(크기) 변수
+>} stk_t;
+>
+>void init_stack(stk_t* st); // 스택 초기화
+>int is_empty(stk_t* st); // 스택이 비었는가
+>int is_pull(stk_t* st); // 스택이 가득 찼는가
+>void push(stk_t* st, int data); // 스택에 push 하기
+>int pop(stk_t* st); // 스택에 pop 하기
+>int peek(stk_t* st); // 스택에 peek 하기
+>void print_stack(stk_t* st); // 스택 공간 출력
+>void free_stack(stk_t* st); // 스택 공간 메모리 반납
+>```
+- ["Week05/Stack.h"](./Week05/Stack.h)
+- ["Week05/Stack.c"](./Week05/Stack.c)
+- ["Week05/StackMain.c"](./Week05/StackMain.c)
+> [ StackMain on Terminal ]
+> ![Terminal](./Week05/Terminal1.png)
+
+---

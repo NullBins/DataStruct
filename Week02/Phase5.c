@@ -28,8 +28,9 @@ char* elem[MAX];
 int main(void) {
     srand(time(NULL));
 
-    printf("추가할 정수의 개수를 입력하세요 : ");
+    printf("추가할 문자열의 개수를 입력하세요 : ");
     if (only_num(&size)) return 0;
+    printf("%d개 문자열 입력 : ", size);
     input_list();
     run_menu();
     free_list();
@@ -42,7 +43,8 @@ void run_menu() {
     int pos;
     while (1) {
         get_line(DEFVAL);
-        print_list();
+        print_list(); printf("\n");
+        get_line(DEFVAL);
         printf("\n(1) 끝에 값 추가\t(2) pos번째에 값 추가\n");
         printf("(3) pos번째 삭제\t(4) pos번째 값 변경\n");
         printf("(5) 종료\n");

@@ -63,10 +63,27 @@
 >void print_stack(stk_t* st); // 스택 공간 출력
 >void free_stack(stk_t* st); // 스택 공간 메모리 반납
 >```
-- ["Week05/Stack.h"](./Week05/Stack.h)
-- ["Week05/Stack.c"](./Week05/Stack.c)
-- ["Week05/StackMain.c"](./Week05/StackMain.c)
+- ["Stack/Stack.h"](./Week05/Stack/Stack.h)
+- ["Stack/Stack.c"](./Week05/Stack/Stack.c)
+- ["Stack/StackMain.c"](./Week05/Stack/StackMain.c)
 > [ StackMain on Terminal ]
 > ![Terminal](./Week05/Terminal1.png)
+
+### 4-2) Paren checking using stack
+> [ Paren check example]
+>
+> ![Terminal](./Week05/ParenCheck.png)
+>```c
+>int is_open(char paren); // 여는 괄호 확인
+>int is_closing(char paren); // 닫는 괄호 확인
+>int matching(char open_pr, char pr); // 여닫는 괄호가 일치하는지 확인
+>void print_line(stk_t* st, char* parens); // 문자열과 스택 출력
+>int paren_check(char* parens); // 괄호 검사 함수
+>```
+- ["ParenCheck/Stack.h"](./Week05/ParenCheck/Stack.h)
+- ["ParenCheck/Stack.c"](./Week05/ParenCheck/Stack.c)
+- ["ParenCheck/ParenCheck.c"](./Week05/ParenCheck/ParenCheck.c)
+> [ ParenCheck on Terminal ]
+> ![Terminal](./Week05/Terminal2.png)
 
 ---

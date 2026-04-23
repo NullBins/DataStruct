@@ -42,6 +42,7 @@
 
 ## 4. Stack Implimentation (<u>Week05</u>)
 > [ Stack example ]
+>
 > ![Terminal](./Week05/Stack.png)
 ### 4-1) Stack ADT structure
 > [ Stack ADT Struct & Functions ]

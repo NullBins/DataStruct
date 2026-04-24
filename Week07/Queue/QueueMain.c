@@ -24,7 +24,7 @@ int main(void) {
             enqueue(&queue, val); break;
         case 2:
             front = dequeue(&queue);
-            if (front != QUEUE_ERROR) { getLine(50); printf("[pop] front에 있던 값 %d이 pop 되었습니다.\n", front); } break;
+            if (front != QUEUE_ERROR) { getLine(50); printf("[dequeue] front에 있던 값 %d이 pop 되었습니다.\n", front); } break;
         case 3:
             front = peek(&queue);
             if (front != QUEUE_ERROR) { getLine(50); printf("[peek] front에 있던 값 %d이 peek 되었습니다.\n", front); } break;

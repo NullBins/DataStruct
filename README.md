@@ -88,11 +88,11 @@
 
 ---
 
-## 5. Circular Queue Implimentation (<u>Week07</u>)
+## 6. Circular Queue Implimentation (<u>Week07</u>)
 > [ Queue example ]
 >
 > ![Picture](./Week07/Queue.png)
-### 5-1) Queue ADT structure
+### 6-1) Queue ADT structure
 > [ Queue ADT Struct & Functions ]
 >```c
 >typedef int elem_int; // elem_int 정의

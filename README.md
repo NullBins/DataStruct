@@ -43,7 +43,7 @@
 ## 4. Stack Implimentation (<u>Week05</u>)
 > [ Stack example ]
 >
-> ![Terminal](./Week05/Stack.png)
+> ![Picture](./Week05/Stack.png)
 ### 4-1) Stack ADT structure
 > [ Stack ADT Struct & Functions ]
 >```c
@@ -72,7 +72,7 @@
 ### 4-2) Paren checking using stack
 > [ Paren check example]
 >
-> ![Terminal](./Week05/ParenCheck.png)
+> ![Picture](./Week05/ParenCheck.png)
 >```c
 >int is_open(char paren); // 여는 괄호 확인
 >int is_closing(char paren); // 닫는 괄호 확인
@@ -85,5 +85,36 @@
 - ["ParenCheck/ParenCheck.c"](./Week05/ParenCheck/ParenCheck.c)
 > [ ParenCheck on Terminal ]
 > ![Terminal](./Week05/Terminal2.png)
+
+---
+
+## 5. Circular Queue Implimentation (<u>Week07</u>)
+> [ Queue example ]
+>
+> ![Picture](./Week07/Queue.png)
+### 5-1) Queue ADT structure
+> [ Queue ADT Struct & Functions ]
+>```c
+>typedef int elem_int; // elem_int 정의
+>
+>typedef struct Queue { // Queue 구조체
+>    elem_int data[MAX_QUEUE_SIZE]; // Queue 공간
+>    int rear; // rear = (맨뒤)다음 데이터가 들어갈 공간
+>    int front; // front = (맨앞)데이터가 제일 처음 들어온 공간 (dequeue시 front값이 나감)
+>} que_t;
+>
+>void init_queue(que_t* que); // Queue 초기화.
+>elem_int is_empty(que_t* que); // 공간 Empty 확인. (True: front == rear) : 때문에 원형 큐는 공간 1개는 비워둬야 함.
+>elem_int is_full(que_t* que); // 공간 Full 확인. (True: front == (rear + 1) % MAX_SIZE)
+>void enqueue(que_t* que, elem_int val); // 맨뒤에 값을 넣음. (data[rear] = value; rear = (rear + 1) % MAX_SIZE)
+>elem_int dequeue(que_t* que); // 맨값 값을 내보냄. (return data[front]; front = (front + 1) % MAX_SIZE)
+>elem_int peek(que_t* que); // front값을 내보내지 않고 출력 (return data[front])
+>void print_queue(que_t* que); // Queue 출력
+>```
+- ["Queue/Queue.h"](./Week07/Queue/Queue.h)
+- ["Queue/Queue.c"](./Week07/Queue/Queue.c)
+- ["Queue/QueueMain.c"](./Week07/Queue/QueueMain.c)
+> [ QueueMain on Terminal ]
+> ![Terminal](./Week07/Terminal1.png)
 
 ---

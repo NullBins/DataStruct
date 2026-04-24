@@ -4,7 +4,7 @@
 
 int main(void) {
     elem_int menu, val;
-    elem_int p_val;
+    elem_int top;
     stk_t stack;
 
     init_stack(&stack);
@@ -24,12 +24,12 @@ int main(void) {
             getLine(50); printGrad("push > "); if(onlyNumber(&val)) continue;
             push(&stack, val); break;
         case 2:
-            p_val = pop(&stack);
-            if (p_val != -1) { getLine(50); printf("[pop] top에 있던 값 %d이 pop 되었습니다.\n", p_val); } break;
+            top = pop(&stack);
+            if (top != STACK_ERROR) { getLine(50); printf("[pop] top에 있던 값 %d이 pop 되었습니다.\n", top); } break;
         case 3:
-            p_val = peek(&stack);
-            if (p_val != -1) { getLine(50); printf("[peek] top에 있던 값 %d이 peek 되었습니다.\n", p_val); } break;
-        default: printf(RED "1 ~ 4 중 하나를 선택해주세요.\n"); break;
+            top = peek(&stack);
+            if (top != STACK_ERROR) { getLine(50); printf("[peek] top에 있던 값 %d이 peek 되었습니다.\n", top); } break;
+        default: printf(RED "1 ~ 4 중 하나를 선택해주세요.\n" RESET); break;
         }
     }
 
